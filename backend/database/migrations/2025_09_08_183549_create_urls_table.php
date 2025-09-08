@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('original');
             $table->string('shortened', 8)->unique();
+            $table->boolean('active')->default(true);
             $table->timestamp('expires_at');
             $table->timestamps();
         });
