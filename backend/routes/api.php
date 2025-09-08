@@ -7,4 +7,5 @@ Route::get('/test', function () {
     return response()->json(["working" => true]);
 });
 
-Route::post('/shorten', [UrlController::class, 'shorten']);
+Route::post('/url/shorten', [UrlController::class, 'shorten']);
+Route::get('/url/{shortened}', [UrlController::class, 'show']);
