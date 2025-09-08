@@ -17,11 +17,13 @@ class UrlController extends Controller
         ]);
 
         $url = new Url();
-        $url->original = $request->input('url');
+        $url->original = urlencode($request->get('url'));
         $url->shortened = Helpers::generateShortenedCode();
         $url->expires_at = Carbon::now()->addDays(1);
         $url->active = true;
         $url->save();
+
+        $url->original = urldecode($url->original);
 
         return response()->json(["shortened_url" => $url]);
     }
