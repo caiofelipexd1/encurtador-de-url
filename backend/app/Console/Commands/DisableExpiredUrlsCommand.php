@@ -26,7 +26,6 @@ class DisableExpiredUrlsCommand extends Command
      */
     public function handle()
     {
-        logger(now()->toDateTimeString());
         $expiredUrls = Url::where('expires_at', '<=', now()->toDateTimeString())
             ->where('active', 1)
             ->get();
