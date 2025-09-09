@@ -5,7 +5,7 @@ networks:
 services:
   db:
     image: mariadb
-    container_name: db_url_shortener
+    container_name: db
     networks:
       - application
     volumes:
@@ -18,4 +18,17 @@ services:
       - MYSQL_DATABASE=url_shortener
     ports:
       - "3306:3306"
+    restart: always
+
+  app:
+    image: node:lts
+    container_name: app
+    working_dir: /home/node/app
+    volumes:
+      - ./frontend/:/home/node/app
+    environment:
+      - TZ=America/Belem
+    command: npm run start
+    ports:
+      - "3000:3000"
     restart: always
