@@ -9,7 +9,7 @@ export default function ShortenedURLHandler() {
 
     useEffect(() => {
         const { shortenedURL } = params;
-        fetch(`http://localhost:8000/api/url/${shortenedURL}`)
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/${shortenedURL}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);

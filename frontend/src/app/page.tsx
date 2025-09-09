@@ -15,22 +15,60 @@ const calSans = Cal_Sans({
 export default function Home() {
     const [loading, setLoading] = useState(false);
     const [url, setUrl] = useState("");
-    const [shortenedUrl, setShortenedUrl] = useState(null);
-    const [hasErrors, setHasErrors] = useState({});
+    const [shortenedUrl, setShortenedUrl] = useState({
+        url: {
+            id: 0,
+            original: null,
+            shortened: null,
+            expires_at: null,
+            active: false,
+            created_at: null,
+            updated_at: null,
+        }
+    });
+    const [hasErrors, setHasErrors] = useState({
+        message: "",
+        errors: {
+            url: [
+                ""
+            ]
+        }
+    });
     const [copied, setCopied] = useState(false);
 
     const handleSetURL = (event: React.ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
-        setUrl(event.target.value);
+        setUrl(event.currentTarget.value);
     }
 
-    const handleSubmitURL = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        setLoading(true);
-        setShortenedUrl(null);
-        setHasErrors({});
+    const handleSubmitURL = async (event: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
         event.preventDefault();
+        if (!url) {
+            return
+        }
+        setLoading(true);
+        setShortenedUrl({
+            url: {
+                id: 0,
+                original: null,
+                shortened: null,
+                expires_at: null,
+                active: false,
+                created_at: null,
+                updated_at: null,
+            }
+        });
+        setHasErrors({
+            message: "",
+            errors: {
+                url: [
+                    ""
+                ]
+            }
+        });
+
         try {
-            const req = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL, { url }, {
+            const req = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/shorten`, { url }, {
                 headers: {
                     "Accept": "application/json",
                     "Content-Type": "application/json"
@@ -41,18 +79,20 @@ export default function Home() {
                 setShortenedUrl(data);
                 setUrl("");
             }
-        } catch (e) {
-            setHasErrors(e.response?.data);
+        } catch (e: any) {
+            if (axios.isAxiosError(e)) {
+                setHasErrors(e.response?.data);
+            }
         }
         setLoading(false);
     }
 
     const handleClickButtonShortener = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
-        redirect(`${process.env.NEXT_PUBLIC_BASE_URL}/${shortenedUrl?.url.shortened}`);
+        redirect(`${process.env.NEXT_PUBLIC_BASE_URL}/${shortenedUrl?.url?.shortened}`);
     }
 
-    const copyToClipboard = async (text: string) => {
+    const copyToClipboard = async () => {
         await navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_BASE_URL}/${shortenedUrl?.url.shortened}`);
         setCopied(!copied);
     }
@@ -65,7 +105,7 @@ export default function Home() {
                 <Input className={"w-1/3"} type="text" placeholder="URL" value={url} onChange={handleSetURL} disabled={loading} />
                 <Button className={`hover:cursor-pointer`} onClick={handleSubmitURL} disabled={loading}> { loading ? 'Carregando' : 'Encurtar!'}</Button>
             </div>
-            {shortenedUrl && (
+            {shortenedUrl.url.id != 0 && (
                 <div className={`flex flex-row items-center justify-center gap-4 w-full`}>
                     <Button className={`hover:cursor-pointer`} variant="link" onClick={handleClickButtonShortener}>
                         {`${process.env.NEXT_PUBLIC_BASE_URL}/${shortenedUrl?.url?.shortened}`}
@@ -89,7 +129,7 @@ export default function Home() {
                 </div>
             )}
 
-            { hasErrors && (
+            { hasErrors.message && (
                 <p className={`text-red-500`}>{hasErrors.message}</p>
             )}
 
