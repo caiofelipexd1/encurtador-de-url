@@ -9,7 +9,7 @@ class Helpers
 {
     static public function generateShortenedCode(): string {
         do {
-            $code = Str::random(8);
+            $code = Str::random(6);
             $codeExistsAndIsActive = Url::where('shortened', $code)
                 ->where('active', 1)
                 ->exists();

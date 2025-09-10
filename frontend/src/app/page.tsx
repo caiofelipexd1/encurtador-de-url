@@ -102,8 +102,8 @@ export default function Home() {
                 Encurtador de URL
             </h1>
             <div className={`flex flex-row items-center justify-center gap-4 w-full mb-10`}>
-                <Input className={"w-1/3"} type="text" placeholder="URL" value={url} onChange={handleSetURL} disabled={loading} />
-                <Button className={`hover:cursor-pointer`} onClick={handleSubmitURL} disabled={loading}> { loading ? 'Carregando' : 'Encurtar!'}</Button>
+                <Input className={"w-1/3"} type="text" placeholder="Cole seu link longo aqui. ex: https://exemplo.com/meu-link-longo" value={url} onChange={handleSetURL} disabled={loading} />
+                <Button className={`hover:cursor-pointer`} onClick={handleSubmitURL} disabled={loading}>{ loading ? 'Carregando' : 'Encurtar!'}</Button>
             </div>
             {shortenedUrl.url.id != 0 && (
                 <div className={`flex flex-row items-center justify-center gap-4 w-full`}>

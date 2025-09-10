@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('urls', function (Blueprint $table) {
             $table->id();
             $table->string('original');
-            $table->string('shortened', 8)->unique();
+            $table->string('shortened', 6)->unique();
             $table->boolean('active')->default(true);
             $table->timestamp('expires_at');
             $table->timestamps();
