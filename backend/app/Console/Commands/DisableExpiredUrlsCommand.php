@@ -34,7 +34,5 @@ class DisableExpiredUrlsCommand extends Command
             $expiredUrl->active = 0;
             $expiredUrl->save();
         }
-
-        return 'a';
     }
 }

@@ -1,6 +1,6 @@
 .idea
 docs/*.mwb.bak
-docker/
+docker/services
 
 # backend laravel
 backend/*.log
