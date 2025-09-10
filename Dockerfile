@@ -40,8 +40,6 @@ RUN touch /var/log/cron.log
 
 CMD tail -f /var/log/cron.log
 
-ENTRYPOINT cron -f
-
 EXPOSE 9000
 
-CMD ["php-fpm"]
+CMD bash -c "cron && php-fpm"
