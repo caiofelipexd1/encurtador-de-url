@@ -42,7 +42,6 @@ class UrlController extends Controller
         }
 
         $shortenedUrl = Url::where('shortened', $shortened)
-            ->where('active', 1)
             ->first();
 
         if (!$shortenedUrl) {
